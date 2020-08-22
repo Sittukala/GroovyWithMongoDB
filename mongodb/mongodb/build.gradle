@@ -1,0 +1,83 @@
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+apply plugin: 'java'
+
+mainClassName = 'App'
+
+repositories {
+	mavenCentral()
+}
+
+
+eclipse {
+	project.name='tweets_by_category'
+	project {
+	
+	  buildCommand 'org.eclipse.jdt.core.javabuilder'
+	  buildCommand 'org.eclipse.buildship.core.gradleprojectbuilder'
+	  buildCommand 'org.springframework.ide.eclipse.core.springbuilder'
+	  buildCommand 'org.eclipse.wst.common.project.facet.core.builder'
+	  natures 'org.eclipse.jdt.core.javanature',
+	    'org.eclipse.jdt.groovy.core.groovyNature',
+	  	'org.eclipse.buildship.core.gradleprojectnature'
+	}
+}
+
+mainClassName='lab2.tweets_by_category'
+
+
+// tag::versions[]
+ext {
+	groovyVersion = '2.4.17'
+}
+// end::versions[]
+
+
+dependencies {
+    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
+	compile 'org.mongodb:mongodb-driver-sync:3.11.0'
+	compile 'org.mongodb:mongodb-driver-async:3.11.0'
+	compile 'org.mongodb:mongodb-driver-legacy:3.11.0'
+	compile 'org.mongodb:bson:3.0.0'
+}
+
+//task runScript (dependsOn: 'classes', type: JavaExec) {
+task runScript (dependsOn: 'classes', type: JavaExec) {
+	//main = "lab2.MongoDb"
+	main = "lab2.tweets_by_category"
+//	main = "lab2.Exercise"
+	classpath = sourceSets.main.runtimeClasspath
+	 if(project.hasProperty('command'))   {
+		 args project.getProperty('command');
+		 }
+}
+
+/*task runScript (dependsOn: 'classes', type: JavaExec) {
+	doLast {
+	if (project.command == "ex01") {
+		main = "lab2.MongoDb"
+		classpath = sourceSets.main.runtimeClasspath
+		//println("Ok will do 3b")
+}
+else if (project.command == "ex03_c")
+{
+main = "lab2.tweets_by_category"
+//println("Ok will do 3c")
+}
+}
+}*/
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// PROJECT SPECIFIC
+///////////////////////////////////////////////////////////////////////////////
+
+// name of the jar to be generated
+jar.baseName = 'mongodb'
+jar.version = ''
+
+// name of the Eclipse project
+eclipse.project.name = 'mongodb'
+
